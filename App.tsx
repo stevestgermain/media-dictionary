@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Acronym, AcronymSubmission } from './types';
+import { Acronym, AcronymSubmission, AiResponseSchema } from './types';
 import { INITIAL_ACRONYMS } from './constants';
 import { lookupAcronymWithGemini } from './services/geminiService';
 import { SearchInput } from './components/SearchInput';
 import { ResultCard } from './components/ResultCard';
 import { FeaturedTerm } from './components/FeaturedTerm';
 import { SubmissionModal } from './components/SubmissionModal';
-import { BookOpen, PlusCircle, CheckCircle2 } from 'lucide-react';
+import { BookOpen, PlusCircle, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 // Keys for localStorage
 const STORAGE_KEY = 'adtech_acronym_data_v2'; 
@@ -17,6 +17,7 @@ export default function App() {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [missingKeyError, setMissingKeyError] = useState(false);
   
   // Submission State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,16 +61,26 @@ export default function App() {
 
     setIsLoading(true);
     setAiError(null);
+    setMissingKeyError(false);
 
     const result = await lookupAcronymWithGemini(query);
 
-    if (result && result.isRelevant) {
+    // Handle missing key specifically
+    if (result && 'error' in result && result.error === 'MISSING_KEY') {
+      setMissingKeyError(true);
+      setIsLoading(false);
+      return;
+    }
+
+    const aiResult = result as AiResponseSchema | null;
+
+    if (aiResult && aiResult.isRelevant) {
       const newAcronym: Acronym = {
         id: query.toLowerCase(),
         term: query.toUpperCase(),
-        expansion: result.expansion,
-        definition: result.definition,
-        category: result.category,
+        expansion: aiResult.expansion,
+        definition: aiResult.definition,
+        category: aiResult.category,
         votes: 0, 
         source: 'ai'
       };
@@ -136,10 +147,12 @@ export default function App() {
           onChange={(val) => {
             setQuery(val);
             setAiError(null);
+            setMissingKeyError(false);
           }}
           onClear={() => {
             setQuery('');
             setAiError(null);
+            setMissingKeyError(false);
           }}
           onEnter={handleGeminiLookup}
           isLoading={isLoading}
@@ -156,6 +169,19 @@ export default function App() {
             <ResultCard 
               acronym={activeResult} 
             />
+          ) : query && missingKeyError ? (
+            <div className="bg-amber-50 rounded-xl border border-amber-200 p-6 text-center shadow-sm">
+              <div className="flex justify-center mb-3">
+                <AlertTriangle className="w-8 h-8 text-amber-500" />
+              </div>
+              <h3 className="text-lg font-bold text-amber-900 mb-2">Setup Required</h3>
+              <p className="text-amber-700 mb-4">
+                To use the AI lookup feature, you need to configure your Google Gemini API Key.
+              </p>
+              <p className="text-sm text-amber-600">
+                If you are the developer, add <code>API_KEY</code> to your environment variables.
+              </p>
+            </div>
           ) : query && !aiError ? (
             <div className="bg-white rounded-xl border border-slate-200 p-8 text-center shadow-sm">
                <p className="text-slate-600 mb-6">

@@ -1,10 +1,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { AiResponseSchema } from '../types';
 
-export const lookupAcronymWithGemini = async (term: string): Promise<AiResponseSchema | null> => {
+export const lookupAcronymWithGemini = async (term: string): Promise<AiResponseSchema | { error: string } | null> => {
+  // Check if the key exists. 
+  // Note: In Vite, we access it via process.env.API_KEY which is defined in vite.config.ts
   if (!process.env.API_KEY) {
-    console.warn("API_KEY not found in environment variables.");
-    return null;
+    console.warn("API_KEY not found.");
+    return { error: 'MISSING_KEY' };
   }
 
   try {
