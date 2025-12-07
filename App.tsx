@@ -224,7 +224,7 @@ export default function App() {
 
       {/* Footer */}
       <div className="mt-auto pt-8 border-t border-slate-200 w-full max-w-2xl text-center text-slate-400 text-sm">
-        <p>&copy; {new Date().getFullYear()} Media Dictionary.</p>
+        <p>&copy; {new Date().getFullYear()} Media Dictionary. v1.0.2</p>
       </div>
 
       {/* Submission Modal */}
