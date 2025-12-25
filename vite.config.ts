@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       'process.env.API_KEY': JSON.stringify(env.API_KEY)
     },
     build: {
-      outDir: 'build', // Tells Vite to output to 'build' instead of 'dist'
+      outDir: 'dist', // Reverted to 'dist' for Vercel compatibility
     }
   }
 })
