@@ -35,8 +35,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <div className="relative">
-      <div className="relative flex items-center bg-white rounded-xl border border-slate-200 shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all overflow-hidden">
-        <div className="pl-5 text-slate-400">
+      <div className="relative flex items-center bg-gray-50 rounded-2xl border border-gray-200 focus-within:bg-white focus-within:ring-1 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-200 overflow-hidden">
+        <div className="pl-4 text-gray-400">
           <Search className="w-5 h-5" />
         </div>
         <input
@@ -45,17 +45,17 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           value={value}
           onChange={(e) => onChange(e.target.value.toUpperCase())}
           onKeyDown={handleKeyDown}
-          placeholder="Enter acronym (e.g. ROI, CPM)..."
-          className="w-full bg-transparent text-slate-900 text-lg font-medium px-5 py-4 focus:outline-none placeholder-slate-400 tracking-wide uppercase"
+          placeholder="Search..."
+          className="w-full bg-transparent text-gray-900 text-base px-3 py-3.5 focus:outline-none placeholder:text-gray-400 font-medium"
           autoComplete="off"
           spellCheck="false"
         />
         {value && (
           <button 
             onClick={onClear}
-            className="pr-5 text-slate-400 hover:text-slate-600 transition-colors"
+            className="pr-4 text-gray-400 hover:text-gray-600 transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         )}
       </div>

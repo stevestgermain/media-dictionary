@@ -112,36 +112,33 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center pt-16 pb-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className="flex flex-col items-center pt-6 pb-12 px-4 w-full max-w-[460px] mx-auto min-h-screen">
       
       {/* Toast Notification */}
       <div className={`fixed top-6 right-6 z-50 transition-all duration-300 transform ${showSuccessToast ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0 pointer-events-none'}`}>
-        <div className="bg-white border border-green-200 rounded-lg shadow-lg p-4 flex items-center space-x-3">
+        <div className="bg-white border border-green-200 rounded-2xl shadow-lg p-4 flex items-center space-x-3">
           <CheckCircle2 className="w-5 h-5 text-green-500" />
           <div>
-            <h4 className="text-sm font-semibold text-slate-800">Submission Received</h4>
-            <p className="text-xs text-slate-500">Thanks! We'll review your term shortly.</p>
+            <h4 className="text-sm font-bold text-gray-900">Submitted</h4>
           </div>
         </div>
       </div>
 
-      {/* Professional Header */}
-      <div className="w-full max-w-2xl mb-10 text-center">
-        <div className="flex items-center justify-center space-x-2 mb-4">
-          <div className="bg-blue-600 p-2 rounded-lg text-white">
-             <BookOpen className="w-6 h-6" />
-          </div>
+      {/* Signature Header (The "Tilted Sticker") - Centered */}
+      <div className="w-full mb-8 relative z-10 flex flex-col items-center text-center">
+        <div className="w-14 h-14 bg-blue-600 rounded-2xl shadow-lg shadow-blue-600/10 mb-5 text-white transform -rotate-6 flex items-center justify-center hover:scale-105 duration-300 transition-transform">
+           <BookOpen className="w-7 h-7" />
         </div>
-        <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-3">
-          Media Dictionary
+        <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+          Acronym Decoder
         </h1>
-        <p className="text-slate-600 text-lg max-w-lg mx-auto leading-relaxed">
-          Demystifying industry jargon, one acronym at a time.
+        <p className="text-[13px] text-gray-500 max-w-[420px] font-normal leading-relaxed">
+          Demystifying Ad Tech, Marketing, and Finance jargon.
         </p>
       </div>
 
-      {/* Main Container */}
-      <div className="w-full max-w-2xl">
+      {/* Main Toolbox Card */}
+      <div className="w-full bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-200 p-6">
         <SearchInput 
           value={query}
           onChange={(val) => {
@@ -159,43 +156,40 @@ export default function App() {
         />
 
         {/* Content Area */}
-        <div className="mt-8 mb-16">
+        <div className="mt-6">
           {isLoading ? (
-            <div className="bg-white rounded-xl border border-slate-200 p-8 text-center shadow-sm">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-slate-500 font-medium">Consulting dictionary...</p>
+            <div className="bg-gray-50 rounded-2xl border border-gray-200 p-8 text-center">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-3"></div>
+              <p className="text-gray-500 text-xs font-bold uppercase tracking-wider">Searching...</p>
             </div>
           ) : activeResult ? (
             <ResultCard 
               acronym={activeResult} 
             />
           ) : query && missingKeyError ? (
-            <div className="bg-amber-50 rounded-xl border border-amber-200 p-6 text-center shadow-sm">
+            <div className="bg-amber-50 rounded-2xl border border-amber-200 p-6 text-center">
               <div className="flex justify-center mb-3">
-                <AlertTriangle className="w-8 h-8 text-amber-500" />
+                <AlertTriangle className="w-6 h-6 text-amber-500" />
               </div>
-              <h3 className="text-lg font-bold text-amber-900 mb-2">Setup Required</h3>
-              <p className="text-amber-700 mb-4">
-                To use the AI lookup feature, you need to configure your Google Gemini API Key.
-              </p>
-              <p className="text-sm text-amber-600">
-                If you are the developer, add <code>API_KEY</code> to your environment variables.
+              <h3 className="text-sm font-bold text-amber-900 mb-1">API Key Missing</h3>
+              <p className="text-[13px] text-amber-700">
+                Please configure <code>API_KEY</code>.
               </p>
             </div>
           ) : query && !aiError ? (
-            <div className="bg-white rounded-xl border border-slate-200 p-8 text-center shadow-sm">
-               <p className="text-slate-600 mb-6">
-                 Term not found in local database.
+            <div className="bg-gray-50 rounded-2xl border border-gray-200 p-8 text-center">
+               <p className="text-gray-500 text-sm mb-4">
+                 Term not in local library.
                </p>
                <button 
                 onClick={handleGeminiLookup}
-                className="inline-flex items-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                className="px-2.5 py-1.5 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg text-gray-600 shadow-sm hover:text-blue-600 hover:border-blue-200 hover:shadow-md transition-all"
                >
                  Ask AI to Define "{query}"
                </button>
             </div>
           ) : aiError ? (
-             <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-center text-sm font-medium">
+             <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 text-gray-500 text-center text-[13px]">
                 {aiError}
              </div>
           ) : (
@@ -205,16 +199,13 @@ export default function App() {
                 onSelect={(term) => setQuery(term)}
               />
               
-              <div className="mt-8 text-center">
-                <p className="text-slate-400 text-sm mb-3">
-                  Can't find a term? Help us improve the dictionary.
-                </p>
+              <div className="mt-6 pt-6 border-t border-gray-100 text-center">
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors px-4 py-2 rounded-lg hover:bg-blue-50"
+                  className="px-2.5 py-1.5 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg text-gray-600 shadow-sm hover:text-blue-600 hover:border-blue-200 hover:shadow-md transition-all inline-flex items-center gap-2"
                 >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>Submit a New Term</span>
+                  <PlusCircle className="w-3 h-3" />
+                  <span>Submit New Term</span>
                 </button>
               </div>
             </>
@@ -222,9 +213,9 @@ export default function App() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="mt-auto pt-8 border-t border-slate-200 w-full max-w-2xl text-center text-slate-400 text-sm">
-        <p>&copy; {new Date().getFullYear()} Media Dictionary. v1.0.2</p>
+      {/* Minimal Footer */}
+      <div className="mt-8 text-center">
+        <p className="text-[10px] text-gray-400 font-bold tracking-wider uppercase">v1.0.3 • Local & AI Powered</p>
       </div>
 
       {/* Submission Modal */}

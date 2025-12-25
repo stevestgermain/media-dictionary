@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Tag } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { Acronym } from '../types';
 
 interface FeaturedTermProps {
@@ -9,42 +9,30 @@ interface FeaturedTermProps {
 
 export const FeaturedTerm: React.FC<FeaturedTermProps> = ({ acronym, onSelect }) => {
   return (
-    <div className="mt-12">
-      <div className="flex items-center space-x-2 mb-4 pb-2 border-b border-slate-200">
-        <Calendar className="w-5 h-5 text-slate-400" />
-        <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Term of the Day</h3>
+    <div className="mt-8">
+      <div className="flex items-center space-x-2 mb-3">
+        <Calendar className="w-4 h-4 text-blue-600" />
+        <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider">Term of the Day</h3>
       </div>
       
       <div 
         onClick={() => onSelect(acronym.term)}
-        className="group relative bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-pointer"
+        className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm cursor-pointer hover:border-blue-300 transition-colors duration-200 group"
       >
-        <div className="flex flex-col space-y-4">
-          <div className="flex justify-between items-start">
-            <div>
-              <h4 className="text-2xl font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
-                {acronym.term}
-              </h4>
-              <p className="text-blue-600 font-medium mt-1">{acronym.expansion}</p>
-            </div>
-            {acronym.category && (
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
-                <Tag className="w-3 h-3 mr-1" />
-                {acronym.category}
-              </span>
-            )}
-          </div>
-          
-          <p className="text-slate-600 line-clamp-3 leading-relaxed">
-            {acronym.definition}
-          </p>
-
-          <div className="pt-2">
-            <span className="text-xs font-semibold text-blue-600 group-hover:underline">
-              Read full definition &rarr;
-            </span>
-          </div>
+        <div className="flex justify-between items-start mb-2">
+           <span className="text-2xl font-bold text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors">
+              {acronym.term}
+           </span>
+           <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">
+              {acronym.category || 'Term'}
+           </span>
         </div>
+        
+        <p className="text-xs font-bold text-gray-900 mb-2">{acronym.expansion}</p>
+        
+        <p className="text-[13px] text-gray-500 leading-relaxed line-clamp-2">
+          {acronym.definition}
+        </p>
       </div>
     </div>
   );
