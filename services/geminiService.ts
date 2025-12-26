@@ -13,7 +13,7 @@ export const lookupAcronymWithGemini = async (term: string): Promise<AiResponseS
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3-pro-preview",
       contents: `Explain the acronym "${term}" specifically in the context of Advertising Technology, Marketing, Social Media, or Finance. 
       
       Requirements:
