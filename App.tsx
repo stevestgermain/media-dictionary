@@ -16,6 +16,33 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
   const [missingKeyError, setMissingKeyError] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  
+  // Dark mode listener effect
+  useEffect(() => {
+    const handleThemeMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'THEME_CHANGE') {
+        setTheme(event.data.theme);
+      }
+    };
+
+    window.addEventListener('message', handleThemeMessage);
+    
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'REQUEST_THEME' }, '*');
+    }
+
+    return () => window.removeEventListener('message', handleThemeMessage);
+  }, []);
+
+  // Apply dark class when theme changes
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
   
   // Load data from local storage on mount
   useEffect(() => {
@@ -34,7 +61,6 @@ export default function App() {
 
   // Determine "Featured Term" based on the current date
   const featuredTerm = useMemo(() => {
-    // Simple hash function to pick a term based on the date string
     const today = new Date().toDateString();
     let hash = 0;
     for (let i = 0; i < today.length; i++) {
@@ -51,7 +77,6 @@ export default function App() {
   }, [query, data]);
 
   const handleGeminiLookup = useCallback(async () => {
-    // Double check conditions before firing API
     if (!query || activeResult) return;
 
     setIsLoading(true);
@@ -60,7 +85,6 @@ export default function App() {
 
     const result = await lookupAcronymWithGemini(query);
 
-    // Handle missing key specifically
     if (result && 'error' in result && result.error === 'MISSING_KEY') {
       setMissingKeyError(true);
       setIsLoading(false);
@@ -94,11 +118,10 @@ export default function App() {
 
   // Auto-lookup effect with debounce
   useEffect(() => {
-    // If we have a query, no local result, and no current error, wait then fetch
     if (query && !activeResult && !aiError && !missingKeyError) {
       const timer = setTimeout(() => {
         handleGeminiLookup();
-      }, 1000); // 1 second debounce to let user finish typing
+      }, 1000);
 
       return () => clearTimeout(timer);
     }
@@ -108,27 +131,25 @@ export default function App() {
   return (
     <div className="flex flex-col items-center pt-6 pb-12 px-4 w-full max-w-[460px] mx-auto min-h-screen">
       
-      {/* Signature Header (The "Tilted Sticker") - Centered */}
+      {/* Signature Header */}
       <div className="w-full mb-8 relative z-10 flex flex-col items-center text-center">
-        <div className="w-14 h-14 bg-blue-600 rounded-2xl shadow-lg shadow-blue-600/10 mb-5 text-white transform -rotate-6 flex items-center justify-center hover:scale-105 duration-300 transition-transform">
+        <div className="w-14 h-14 bg-blue-600 dark:bg-blue-500 rounded-2xl shadow-lg shadow-blue-600/10 dark:shadow-blue-500/20 mb-5 text-white transform -rotate-6 flex items-center justify-center hover:scale-105 duration-300 transition-transform">
            <BookOpen className="w-7 h-7" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
           Acronym Decoder
         </h1>
-        <p className="text-[13px] text-gray-500 max-w-[420px] font-normal leading-relaxed">
+        <p className="text-[13px] text-gray-500 dark:text-gray-400 max-w-[420px] font-normal leading-relaxed">
           Demystifying Ad Tech, Marketing, and Finance jargon.
         </p>
       </div>
 
       {/* Main Toolbox Card */}
-      <div className="w-full bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-200 p-6">
+      <div className="w-full bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-black/50 border border-gray-200 dark:border-zinc-800 p-6 transition-colors duration-300">
         <SearchInput 
           value={query}
           onChange={(val) => {
             setQuery(val);
-            // Only clear errors if the query actually changes significantly, 
-            // but here we clear on any change to allow retry
             setAiError(null);
             setMissingKeyError(false);
           }}
@@ -137,7 +158,7 @@ export default function App() {
             setAiError(null);
             setMissingKeyError(false);
           }}
-          onEnter={handleGeminiLookup} // Keep Enter for immediate lookup
+          onEnter={handleGeminiLookup}
           isLoading={isLoading}
         />
 
@@ -148,24 +169,24 @@ export default function App() {
               acronym={activeResult} 
             />
           ) : (query && !aiError && !missingKeyError) || isLoading ? (
-            <div className="bg-gray-50 rounded-2xl border border-gray-200 p-8 text-center">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-3"></div>
-              <p className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+            <div className="bg-gray-50 dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 p-8 text-center transition-colors duration-300">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 dark:border-blue-500 mx-auto mb-3"></div>
+              <p className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
                 {isLoading ? "Consulting Gemini 3 Pro..." : "Searching..."}
               </p>
             </div>
           ) : query && missingKeyError ? (
-            <div className="bg-amber-50 rounded-2xl border border-amber-200 p-6 text-center">
+            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-200 dark:border-amber-800 p-6 text-center transition-colors duration-300">
               <div className="flex justify-center mb-3">
-                <AlertTriangle className="w-6 h-6 text-amber-500" />
+                <AlertTriangle className="w-6 h-6 text-amber-500 dark:text-amber-400" />
               </div>
-              <h3 className="text-sm font-bold text-amber-900 mb-1">API Key Missing</h3>
-              <p className="text-[13px] text-amber-700">
+              <h3 className="text-sm font-bold text-amber-900 dark:text-amber-200 mb-1">API Key Missing</h3>
+              <p className="text-[13px] text-amber-700 dark:text-amber-300">
                 Please configure <code>API_KEY</code>.
               </p>
             </div>
           ) : aiError ? (
-             <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 text-gray-500 text-center text-[13px]">
+             <div className="p-4 rounded-2xl bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-500 dark:text-gray-400 text-center text-[13px] transition-colors duration-300">
                 {aiError}
              </div>
           ) : (
