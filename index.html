@@ -4,34 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Acronym Decoder</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-            },
-            colors: {
-              gray: {
-                50: '#f9fafb', // Specific light grey from guide
-                100: '#f3f4f6',
-                200: '#e5e7eb',
-                300: '#d1d5db',
-                400: '#9ca3af',
-                500: '#6b7280',
-                900: '#111827',
-              },
-              blue: {
-                600: '#2563eb', // Brand blue
-              }
-            }
-          },
-        },
-      }
-    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react": "https://aistudiocdn.com/react@^19.2.1",
@@ -46,7 +20,7 @@
 </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.contentWindow.min.js"></script>
 </head>
-  <body class="bg-[#f9fafb] text-gray-900 font-sans antialiased min-h-screen selection:bg-blue-100 selection:text-blue-900 overflow-y-scroll">
+  <body class="bg-[#f9fafb] dark:bg-black text-gray-900 dark:text-white font-sans antialiased min-h-screen selection:bg-blue-100 selection:text-blue-900 overflow-y-scroll">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
