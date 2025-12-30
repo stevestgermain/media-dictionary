@@ -35,7 +35,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <div className="relative">
-      <div className="relative flex items-center bg-gray-50 dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 focus-within:bg-white dark:focus-within:bg-zinc-800 focus-within:ring-1 focus-within:ring-blue-500/20 focus-within:border-blue-500 dark:focus-within:border-blue-400 transition-all duration-200 overflow-hidden">
+      <div className="relative flex items-center bg-gray-50 dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 transition-colors duration-200">
         <div className="pl-4 text-gray-400 dark:text-gray-500">
           <Search className="w-5 h-5" />
         </div>
