@@ -28,4 +28,12 @@ export const FeaturedTerm: React.FC<FeaturedTermProps> = ({ acronym, onSelect })
            </span>
         </div>
         
-        <p className="text-xs font-bold text-gray-900 dark:t
+        <p className="text-xs font-bold text-gray-900 dark:text-white mb-2">{acronym.expansion}</p>
+        
+        <p className="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">
+          {acronym.definition}
+        </p>
+      </div>
+    </div>
+  );
+};
