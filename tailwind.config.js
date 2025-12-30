@@ -2,11 +2,7 @@ export default {
   content: [
     "./index.html",
     "./*.{js,ts,jsx,tsx}",
-    "./FeaturedTerm.tsx",
-    "./Leaderboard.tsx",
-    "./ResultCard.tsx",
-    "./SearchInput.tsx",
-    "./SubmissionModal.tsx",
+    "./components/**/*.{js,ts,jsx,tsx}",  // This will scan all files in components folder
   ],
   darkMode: 'class',
   theme: {
