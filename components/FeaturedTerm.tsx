@@ -17,8 +17,7 @@ export const FeaturedTerm: React.FC<FeaturedTermProps> = ({ acronym, onSelect })
       
       <div 
         onClick={() => onSelect(acronym.term)}
-        className="bg-white dark:bg-zinc-800 p-4 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm cursor-pointer hover:border-blue-300 dark:hover:border-blue-500 transition-colors duration-200 group"
-      >
+        className="bg-white dark:bg-zinc-800 p-4 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm cursor-pointer hover:border-blue-300 dark:hover:border-blue-500 transition-colors duration-200 group">
         <div className="flex justify-between items-start mb-2">
            <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               {acronym.term}
